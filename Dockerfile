@@ -1,0 +1,32 @@
+ARG ALPINE_VERSION=3.19
+
+# stage 1: build react+vite app
+FROM node:18.19.0-alpine${ALPINE_VERSION} AS builder
+
+WORKDIR /build-stage
+
+COPY package*.json .
+
+RUN npm i
+
+COPY . .
+
+RUN npm run build
+
+# stage 2: production image
+FROM nginx:1.27.0-alpine${ALPINE_VERSION}
+
+# ARG VITE_BACKEND_URL
+# ENV VITE_BACKEND_URL=${VITE_BACKEND_URL}
+
+# WORKDIR /etc/nginx/conf.d
+
+# COPY default.conf.template .
+
+# RUN envsubst < default.conf.template > default.conf
+
+WORKDIR /usr/share/nginx/html
+
+COPY --from=builder /build-stage/dist .
+
+CMD [ "nginx", "-g", "daemon off;" ]
