@@ -9,6 +9,8 @@ jobs:
   build-and-push-image:
     runs-on: ubuntu-24.04
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -18,8 +20,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Create .env file
+        run: |
+          echo "VITE_API=${{ vars.VITE_API }}" >> .env
+          echo "VITE_BACKEND_URL=${{ vars.VITE_BACKEND_URL }}" >> .env
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
+          context: .
+          build-args: VITE_BACKEND_URL=${{ vars.VITE_BACKEND_URL }}
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/bootcamp-sdso-frontend:${{ github.sha }}
