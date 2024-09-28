@@ -16,14 +16,15 @@ RUN npm run build
 # stage 2: production image
 FROM nginx:1.27.0-alpine${ALPINE_VERSION}
 
-# ARG VITE_BACKEND_URL
-# ENV VITE_BACKEND_URL=${VITE_BACKEND_URL}
+ARG VITE_BACKEND_URL
+ENV VITE_BACKEND_URL=${VITE_BACKEND_URL}
 
-# WORKDIR /etc/nginx/conf.d
+WORKDIR /etc/nginx/conf.d
 
-# COPY default.conf.template .
+COPY default.conf.template .
 
-# RUN envsubst < default.conf.template > default.conf
+RUN sed -i "s|VITE_BACKEND_URL|$VITE_BACKEND_URL|g" default.conf.template && \
+    cp default.conf.template default.conf
 
 WORKDIR /usr/share/nginx/html
 
