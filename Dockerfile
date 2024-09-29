@@ -17,13 +17,16 @@ RUN npm run build
 FROM nginx:1.27.0-alpine${ALPINE_VERSION}
 
 ARG VITE_BACKEND_URL
+ARG VITE_API
 ENV VITE_BACKEND_URL=${VITE_BACKEND_URL}
+ENV VITE_API=${VITE_API}
 
 WORKDIR /etc/nginx/conf.d
 
 COPY default.conf.template .
 
 RUN sed -i "s|VITE_BACKEND_URL|$VITE_BACKEND_URL|g" default.conf.template && \
+    sed -i "s|VITE_API|$VITE_API|g" default.conf.template && \
     cp default.conf.template default.conf
 
 WORKDIR /usr/share/nginx/html

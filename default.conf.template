@@ -11,7 +11,7 @@ server {
     }
 
     # proxy to backend
-    location /api/ {
+    location VITE_API/ {
         # Proxy pass to your backend API
         proxy_pass VITE_BACKEND_URL; # Change this to your actual backend URL
         proxy_set_header Host $host;
@@ -20,7 +20,7 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
 
         # Optionally rewrite the API path
-        rewrite ^/api/?(.*)$ /$1 break;
+        rewrite ^VITE_API/?(.*)$ /$1 break;
     }
 
     #error_page  404              /404.html;
