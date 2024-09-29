@@ -28,7 +28,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          build-args:
+          build-args: |
             VITE_API=${{ vars.VITE_API }}
             VITE_BACKEND_URL=${{ vars.VITE_BACKEND_URL }}
           push: true
