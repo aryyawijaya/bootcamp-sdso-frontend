@@ -54,7 +54,7 @@ function App() {
         )}
       </div>
       <div>
-        <button onClick={handleAPIAddCounter}>Add Counter</button>
+        <button onClick={handleAPIAddCounter}>Add Counter...</button>
         {/* {addCounterResponse && (
           <pre>{addCounterResponse}</pre>
         )} */}
